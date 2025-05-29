@@ -4,14 +4,15 @@ from .utils import sign_cheque, verify_cheque
 from django.http import HttpResponse
 from django.contrib import messages
 import datetime
+from django.shortcuts import render
 
 def home(request):
-    return render(request, 'cheques/home.html')
+    return render(request, 'cheques/home.html') # Corrected template path
 
 def create_cheque(request):
-    print("create_cheque view called!")  # Add this line for debugging
+    print("create_cheque view called!")
     if request.method == 'POST':
-        print("Form data received:", request.POST)  # Add this line for debugging
+        print("Form data received:", request.POST)
         payee = request.POST['payee']
         amount = request.POST['amount']
         date_str = request.POST['date']
@@ -33,12 +34,12 @@ def create_cheque(request):
         messages.success(request, "Cheque created successfully!")
         return redirect('blockchain')
     else:
-        print("GET request received") # Add this line for debugging
+        print("GET request received")
         return render(request, 'cheques/create_cheque.html')
 
 def blockchain(request):
     blocks = Block.objects.all().order_by('-timestamp')
-    return render(request, 'cheques/blockchain.html', {'blocks': blocks})
+    return render(request, 'cheques/blockchain.html')
 
 def verify_cheque_form(request):
     return render(request, 'cheques/verify_cheque.html')
