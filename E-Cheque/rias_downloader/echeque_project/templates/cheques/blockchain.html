@@ -1,0 +1,13 @@
+<h1>Blockchain</h1>
+<ul>
+    {% for block in blocks %}
+        <li>
+            <strong>Block Hash:</strong> {{ block.hash }}<br>
+            <strong>Cheque ID:</strong> {{ block.cheque.id }}<br>
+            <strong>Payee:</strong> {{ block.cheque.payee }}<br>
+            <strong>Amount:</strong> {{ block.cheque.amount }}<br>
+            <strong>Date:</strong> {{ block.cheque.date }}<br>
+            <strong>Timestamp:</strong> {{ block.timestamp }}
+        </li>
+    {% endfor %}
+</ul>
