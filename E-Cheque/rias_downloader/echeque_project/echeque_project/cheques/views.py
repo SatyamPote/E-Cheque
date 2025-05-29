@@ -4,10 +4,9 @@ from .utils import sign_cheque, verify_cheque
 from django.http import HttpResponse
 from django.contrib import messages
 import datetime
-from django.shortcuts import render
 
 def home(request):
-    return render(request, 'cheques/home.html') # Corrected template path
+    return render(request, 'cheques/home.html')
 
 def create_cheque(request):
     print("create_cheque view called!")
@@ -27,8 +26,10 @@ def create_cheque(request):
 
         try:
             block = Block.objects.create(cheque=cheque, previous_hash=Block.objects.all().last().hash if Block.objects.exists() else None)
+            print("Block created successfully!")  # Add this line
         except Exception as e:
             messages.error(request, f"Error creating block: {e}")
+            print(f"Error creating block: {e}")  # Add this line
             return render(request, 'cheques/create_cheque.html')
 
         messages.success(request, "Cheque created successfully!")
@@ -39,7 +40,8 @@ def create_cheque(request):
 
 def blockchain(request):
     blocks = Block.objects.all().order_by('-timestamp')
-    return render(request, 'cheques/blockchain.html')
+    print(f"Number of blocks retrieved: {len(blocks)}")  # Add this line
+    return render(request, 'cheques/blockchain.html', {'blocks': blocks})
 
 def verify_cheque_form(request):
     return render(request, 'cheques/verify_cheque.html')
