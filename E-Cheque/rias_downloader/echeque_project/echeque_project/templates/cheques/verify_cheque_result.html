@@ -1,6 +1,178 @@
-<h1>Verification Result</h1>
-{% if is_valid %}
-    <p>The cheque is valid.</p>
-{% else %}
-    <p>The cheque is invalid or has been tampered with.</p>
-{% endif %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cheque Verification Result</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        header, footer {
+            width: 100%;
+            background-color: #334e68;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .card {
+            overflow: hidden;
+            position: relative;
+            text-align: center;
+            border-radius: 1rem;
+            max-width: 500px;
+            width: 95%;
+            box-shadow: 0 25px 35px -10px rgba(0, 0, 0, 0.2),
+                        0 15px 15px -10px rgba(0, 0, 0, 0.05);
+            background-color: #ffffff;
+            padding: 2rem;
+            box-sizing: border-box;
+            animation: slideIn 0.5s ease;
+            margin-top: 4rem;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .dismiss {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: #f3f4f6;
+            border: 2px solid #d1d5db;
+            color: #111827;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+
+        .dismiss:hover {
+            background-color: #ef4444;
+            border-color: #ef4444;
+            color: white;
+        }
+
+        .image {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: {% if is_valid %}#e2feee{% else %}#ffe6e6{% endif %};
+            width: 5rem;
+            height: 5rem;
+            border-radius: 50%;
+            margin: 0 auto 1rem auto;
+            animation: animate 0.6s linear alternate-reverse infinite;
+        }
+
+        .image svg {
+            width: 3rem;
+            height: 3rem;
+        }
+
+        @keyframes animate {
+            from { transform: scale(1); }
+            to { transform: scale(1.09); }
+        }
+
+        .title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: {% if is_valid %}#047857{% else %}#b91c1c{% endif %};
+            margin-bottom: 0.5rem;
+        }
+
+        .message {
+            color: #4b5563;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .actions {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            padding: 0 1rem;
+        }
+
+        .history, .track {
+            padding: 0.85rem 1rem;
+            font-size: 1.1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: 0.3s ease;
+            font-weight: 600;
+        }
+
+        .history {
+            background-color: #22c55e;
+            color: white;
+            border: none;
+        }
+
+        .history:hover {
+            background-color: #16a34a;
+        }
+
+        .track {
+            background-color: transparent;
+            border: 2px solid #d1d5db;
+            color: #374151;
+        }
+
+        .track:hover {
+            background-color: #f3f4f6;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Cheque Status</h1>
+</header>
+
+<div class="card">
+    <button class="dismiss" onclick="this.parentElement.style.display='none';">×</button>
+    <div class="image">
+        {% if is_valid %}
+            <svg viewBox="0 0 24 24" fill="none">
+                <path d="M20 7L9 18L4 13" stroke="#0afa2a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        {% else %}
+            <svg viewBox="0 0 24 24" fill="none">
+                <path d="M6 18L18 6M6 6l12 12" stroke="#e63946" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        {% endif %}
+    </div>
+    <div class="content">
+        {% if is_valid %}
+            <span class="title">Cheque is Valid ✅</span>
+            <p class="message">The cheque has been verified successfully. It has not been tampered with.</p>
+        {% else %}
+            <span class="title">Cheque is Invalid ❌</span>
+            <p class="message">The cheque is either tampered with or not registered. Please verify your information.</p>
+        {% endif %}
+    </div>
+    <div class="actions">
+        <a href="{% url 'blockchain' %}" class="history">View Blockchain</a>
+        <a href="{% url 'verify_cheque_form' %}" class="track">Try Another</a>
+    </div>
+</div>
+
+
+</body>
+</html>

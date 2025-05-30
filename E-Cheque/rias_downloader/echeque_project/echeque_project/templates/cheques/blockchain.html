@@ -1,13 +1,47 @@
-<h1>Blockchain</h1>
-<ul>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Blockchain Ledger</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f8;
+            padding: 2rem;
+        }
+
+        h1 {
+            text-align: center;
+            color: #334e68;
+        }
+
+        .block {
+            background-color: #fff;
+            margin: 1rem auto;
+            padding: 1.5rem;
+            border-left: 5px solid #334e68;
+            border-radius: 5px;
+            max-width: 800px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .block p {
+            margin: 0.5rem 0;
+            color: #627d98;
+        }
+    </style>
+</head>
+<body>
+    <h1>Blockchain Ledger</h1>
     {% for block in blocks %}
-        <li>
-            <strong>Block Hash:</strong> {{ block.hash }}<br>
-            <strong>Cheque ID:</strong> {{ block.cheque.id }}<br>
-            <strong>Payee:</strong> {{ block.cheque.payee }}<br>
-            <strong>Amount:</strong> {{ block.cheque.amount }}<br>
-            <strong>Date:</strong> {{ block.cheque.date }}<br>
-            <strong>Timestamp:</strong> {{ block.timestamp }}
-        </li>
+    <div class="block">
+        <p><strong>Block ID:</strong> {{ block.id }}</p>
+        <p><strong>Timestamp:</strong> {{ block.timestamp }}</p>
+        <p><strong>Cheque ID:</strong> {{ block.cheque.id }}</p>
+        <p><strong>Previous Hash:</strong> {{ block.previous_hash }}</p>
+        <p><strong>Hash:</strong> {{ block.hash }}</p>
+    </div>
     {% endfor %}
-</ul>
+</body>
+</html>
