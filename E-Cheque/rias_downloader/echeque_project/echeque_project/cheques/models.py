@@ -9,6 +9,7 @@ class Cheque(models.Model):
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     date = models.DateField()
     signature = models.TextField()  # Store the digital signature
+    approved = models.BooleanField(default=False)  # Add this line
 
     def __str__(self):
         return f"Cheque for {self.payee} - {self.amount}"

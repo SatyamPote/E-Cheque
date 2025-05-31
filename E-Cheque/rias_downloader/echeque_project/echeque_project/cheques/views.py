@@ -4,6 +4,10 @@ from .utils import sign_cheque, verify_cheque
 from django.http import HttpResponse
 from django.contrib import messages
 import datetime
+import hashlib
+from Crypto.PublicKey import RSA
+from Crypto.Hash import SHA256
+from Crypto.Signature import pkcs1_15
 
 def home(request):
     return render(request, 'cheques/home.html')
@@ -21,6 +25,10 @@ def create_cheque(request):
             messages.error(request, "Invalid date format. Use YYYY-MM-DD.")
             return render(request, 'cheques/create_cheque.html')
 
+        # Calculate Initial Hash
+        data = f"{payee}{amount}{date_str}"
+        initial_hash = hashlib.sha256(data.encode()).hexdigest()
+
         signature = sign_cheque(payee, amount, date_str)
         cheque = Cheque.objects.create(payee=payee, amount=amount, date=date, signature=signature)
 
@@ -33,7 +41,7 @@ def create_cheque(request):
             return render(request, 'cheques/create_cheque.html')
 
         messages.success(request, "Cheque created successfully!")
-        return redirect('blockchain')
+        return redirect('bank1_approve', cheque_id=cheque.id)  # Redirect to bank1_approve
     else:
         print("GET request received")
         return render(request, 'cheques/create_cheque.html')
@@ -56,3 +64,37 @@ def verify_cheque_result(request):
         is_valid = verify_cheque(payee, amount, date_str, signature)
         return render(request, 'cheques/verify_cheque_result.html', {'is_valid': is_valid})
     return HttpResponse("Invalid request.")
+
+def bank1_approve(request, cheque_id):
+    cheque = Cheque.objects.get(pk=cheque_id)
+    initial_hash = hashlib.sha256(f"{cheque.payee}{cheque.amount}{cheque.date}".encode()).hexdigest()
+    return render(request, 'cheques/bank1_approve.html', {'cheque': cheque, 'initial_hash': initial_hash})
+
+def bank2_approve(request, cheque_id):
+    cheque = Cheque.objects.get(pk=cheque_id)
+    initial_hash = hashlib.sha256(f"{cheque.payee}{cheque.amount}{cheque.date}".encode()).hexdigest()
+
+    # Generate Key Pair
+    key = RSA.generate(2048)
+    private_key = key.export_key()
+    public_key = key.publickey().export_key()
+
+    # Calculate Final Hash (after approval)
+    data = f"{cheque.payee}{cheque.amount}{cheque.date}{initial_hash}"
+    final_hash = hashlib.sha256(data.encode()).hexdigest()
+
+    if request.method == 'POST':
+        # Update the Cheque model to mark it as approved
+        cheque.approved = True
+        cheque.save()
+
+        # Redirect to a success page or the blockchain view
+        return redirect('blockchain')
+
+    return render(request, 'cheques/bank2_approve.html', {
+        'cheque': cheque,
+        'initial_hash': initial_hash,
+        'private_key': private_key.decode(),  # Decode to string for template
+        'public_key': public_key.decode(),  # Decode to string for template
+        'final_hash': final_hash
+    })

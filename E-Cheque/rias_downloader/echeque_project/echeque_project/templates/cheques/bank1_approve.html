@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bank 1 - Waiting for Approval</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f8;
+            padding: 2rem;
+        }
+
+        h1 {
+            text-align: center;
+            color: #334e68;
+        }
+
+        .card {
+            background-color: #fff;
+            margin: 2rem auto;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+        }
+
+        .details {
+            margin-bottom: 2rem;
+        }
+
+        .details p {
+            margin: 0.5rem 0;
+            color: #627d98;
+        }
+
+        .status {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #334e68;
+        }
+
+        .approve-link {
+            display: block;
+            text-align: center;
+            margin-top: 2rem;
+            padding: 0.75rem 1.5rem;
+            background-color: #334e68;
+            color: #fff;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .approve-link:hover {
+            background-color: #486581;
+        }
+    </style>
+</head>
+<body>
+    <h1>Bank 1 - Waiting for Approval</h1>
+
+    <div class="card">
+        <section class="details">
+            <h2>Cheque Details</h2>
+            <p><strong>Payee:</strong> {{ cheque.payee }}</p>
+            <p><strong>Amount:</strong> {{ cheque.amount }}</p>
+            <p><strong>Date:</strong> {{ cheque.date }}</p>
+            <p><strong>Initial Hash:</strong> {{ initial_hash }}</p>
+        </section>
+
+        <div class="status">
+            <p>Waiting for approval from Bank 2...</p>
+        </div>
+
+        <a href="{% url 'bank2_approve' cheque_id=cheque.id %}" class="approve-link">Send to Bank 2 for Approval</a>
+    </div>
+</body>
+</html>

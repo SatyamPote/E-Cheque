@@ -52,10 +52,26 @@
         button:hover {
             background-color: #486581;
         }
+
+        .hash-display {
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: #e9ecef;
+            border-radius: 5px;
+            color: #495057;
+        }
+
+        .status-message {
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: #f8d7da;
+            border-radius: 5px;
+            color: #721c24;
+        }
     </style>
 </head>
 <body>
-    <h1>Create a New Cheque</h1>
+    <h1>Issue E-Cheque (Bank 1)</h1>
     <form method="post">
         {% csrf_token %}
         <label for="payee">Payee:</label>
@@ -67,7 +83,20 @@
         <label for="date">Date:</label>
         <input type="date" id="date" name="date" required>
 
-        <button type="submit">Create Cheque</button>
+        <button type="submit">Send E-Cheque</button>
     </form>
+
+    {% if initial_hash %}
+        <div class="hash-display">
+            <h2>Initial Hash:</h2>
+            <p>{{ initial_hash }}</p>
+        </div>
+    {% endif %}
+
+    {% if status_message %}
+        <div class="status-message">
+            <p>{{ status_message }}</p>
+        </div>
+    {% endif %}
 </body>
 </html>
