@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Check Cheque Status</title>
+  <title>Blockchain Ledger</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background-color: #eef2f7;
+      background-color: #f4f7fa;
     }
 
     header {
@@ -85,10 +85,10 @@
       }
     }
 
-    .container {
-      max-width: 500px;
+    .content {
+      max-width: 1000px;
       margin: 2rem auto;
-      background-color: white;
+      background: white;
       padding: 2rem;
       border-radius: 10px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
@@ -100,58 +100,31 @@
       margin-bottom: 1.5rem;
     }
 
-    form {
-      display: flex;
-      flex-direction: column;
-    }
-
-    label {
-      margin-bottom: 0.5rem;
-      font-weight: 600;
-    }
-
-    input[type="text"] {
-      padding: 0.8rem;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-      margin-bottom: 1.2rem;
-      font-size: 1rem;
-    }
-
-    button {
-      padding: 0.9rem;
-      background-color: #334e68;
-      color: white;
-      font-size: 1rem;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-    button:hover {
-      background-color: #4f6584;
-    }
-
-    .message {
+    table {
+      width: 100%;
+      border-collapse: collapse;
       margin-top: 1rem;
-      text-align: center;
-      font-weight: bold;
     }
 
-    .success {
-      color: green;
+    th, td {
+      padding: 0.8rem;
+      border: 1px solid #ccc;
+      text-align: left;
     }
 
-    .error {
-      color: red;
+    th {
+      background-color: #e0e8f9;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f9fbfd;
     }
   </style>
 </head>
 <body>
 
   <header>
-    <h1>Check Cheque Status</h1>
+    <h1>Blockchain Ledger</h1>
   </header>
 
   <nav>
@@ -170,19 +143,32 @@
     </div>
   </nav>
 
-  <div class="container">
-    <h2>Verify Cheque</h2>
-    <form method="POST" action="{% url 'verify_cheque' %}">
-      {% csrf_token %}
-      <label for="cheque_hash">Enter Cheque Hash:</label>
-      <input type="text" id="cheque_hash" name="cheque_hash" required>
-      <button type="submit">Check Status</button>
-    </form>
+  <div class="content">
+    <h2>Blockchain Cheque Records</h2>
 
-    {% if result %}
-      <div class="message {% if result == 'Valid Cheque' %}success{% else %}error{% endif %}">
-        {{ result }}
-      </div>
+    {% if blockchain %}
+      <table>
+        <thead>
+          <tr>
+            <th>Index</th>
+            <th>Timestamp</th>
+            <th>Cheque Hash</th>
+            <th>Previous Hash</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for block in blockchain %}
+            <tr>
+              <td>{{ block.index }}</td>
+              <td>{{ block.timestamp }}</td>
+              <td>{{ block.current_hash }}</td>
+              <td>{{ block.previous_hash }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p style="text-align: center;">No blockchain data found.</p>
     {% endif %}
   </div>
 

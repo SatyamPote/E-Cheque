@@ -51,50 +51,27 @@ def blockchain(request):
     print(f"Number of blocks retrieved: {len(blocks)}")  # Add this line
     return render(request, 'cheques/blockchain.html', {'blocks': blocks})
 
-def verify_cheque_form(request):
-    return render(request, 'cheques/verify_cheque.html')
-
-def verify_cheque_result(request):
-    if request.method == 'POST':
-        payee = request.POST['payee']
-        amount = request.POST['amount']
-        date_str = request.POST['date']
-        signature = request.POST['signature']
-
-        is_valid = verify_cheque(payee, amount, date_str, signature)
-        return render(request, 'cheques/verify_cheque_result.html', {'is_valid': is_valid})
-    return HttpResponse("Invalid request.")
+def verify_cheque(request):
+    cheques = Cheque.objects.all()
+    return render(request, 'cheques/verify_cheque.html', {'cheques': cheques})
 
 def bank1_approve(request, cheque_id):
     cheque = Cheque.objects.get(pk=cheque_id)
-    initial_hash = hashlib.sha256(f"{cheque.payee}{cheque.amount}{cheque.date}".encode()).hexdigest()
-    return render(request, 'cheques/bank1_approve.html', {'cheque': cheque, 'initial_hash': initial_hash})
+    return render(request, 'cheques/bank1_approve.html', {'cheque': cheque})
 
-def bank2_approve(request, cheque_id):
-    cheque = Cheque.objects.get(pk=cheque_id)
-    initial_hash = hashlib.sha256(f"{cheque.payee}{cheque.amount}{cheque.date}".encode()).hexdigest()
-
-    # Generate Key Pair
-    key = RSA.generate(2048)
-    private_key = key.export_key()
-    public_key = key.publickey().export_key()
-
-    # Calculate Final Hash (after approval)
-    data = f"{cheque.payee}{cheque.amount}{cheque.date}{initial_hash}"
-    final_hash = hashlib.sha256(data.encode()).hexdigest()
-
+def cheque_management(request):
+    cheques = Cheque.objects.all()
     if request.method == 'POST':
-        # Update the Cheque model to mark it as approved
-        cheque.approved = True
-        cheque.save()
+        cheque_id = request.POST.get('cheque_id')
+        action = request.POST.get('action')
 
-        # Redirect to a success page or the blockchain view
-        return redirect('blockchain')
+        if cheque_id and action:
+            cheque = Cheque.objects.get(pk=cheque_id)
+            if action == 'approve':
+                cheque.status = 'approved'
+            elif action == 'reject':
+                cheque.status = 'rejected'
+            cheque.save()
+        return redirect('cheque_management')  # Redirect to the same page after action
 
-    return render(request, 'cheques/bank2_approve.html', {
-        'cheque': cheque,
-        'initial_hash': initial_hash,
-        'private_key': private_key.decode(),  # Decode to string for template
-        'public_key': public_key.decode(),  # Decode to string for template
-        'final_hash': final_hash
-    })
+    return render(request, 'cheques/cheque_management.html', {'cheques': cheques})

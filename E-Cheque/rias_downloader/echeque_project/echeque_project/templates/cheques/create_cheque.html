@@ -1,102 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Create Cheque</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f0f4f8;
-            padding: 2rem;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create E-Cheque</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f2f2;
+      margin: 0;
+      padding: 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      flex-direction: column;
+    }
 
-        h1 {
-            text-align: center;
-            color: #334e68;
-        }
+    h1 {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
 
-        form {
-            max-width: 600px;
-            margin: 2rem auto;
-            background-color: #fff;
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
+    .form-card {
+      background-color: #fff;
+      padding: 2rem;
+      border: 2px solid black;
+      border-radius: 10px;
+      width: 728px;
+      box-sizing: border-box;
+      position: relative;
+    }
 
-        label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: #627d98;
-        }
+    form label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+    }
 
-        input {
-            width: 100%;
-            padding: 0.75rem;
-            margin-bottom: 1.5rem;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
+    form input {
+      width: 100%;
+      padding: 0.75rem;
+      margin-bottom: 1.5rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
 
-        button {
-            background-color: #334e68;
-            color: #fff;
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1rem;
-        }
+    form button {
+      background-color: black;
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
 
-        button:hover {
-            background-color: #486581;
-        }
+    form button:hover {
+      background-color: #333;
+    }
 
-        .hash-display {
-            margin-top: 1rem;
-            padding: 1rem;
-            background-color: #e9ecef;
-            border-radius: 5px;
-            color: #495057;
-        }
+    .hash-display, .status-message {
+      margin-top: 1.5rem;
+      padding: 1rem;
+      border-radius: 5px;
+      font-size: 14px;
+    }
 
-        .status-message {
-            margin-top: 1rem;
-            padding: 1rem;
-            background-color: #f8d7da;
-            border-radius: 5px;
-            color: #721c24;
-        }
-    </style>
+    .hash-display {
+      background-color: #e9ecef;
+      color: #495057;
+    }
+
+    .status-message {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+  </style>
 </head>
 <body>
-    <h1>Issue E-Cheque (Bank 1)</h1>
+
+  <h1>Issue E-Cheque</h1>
+
+  <div class="form-card">
     <form method="post">
-        {% csrf_token %}
-        <label for="payee">Payee:</label>
-        <input type="text" id="payee" name="payee" required>
+      {% csrf_token %}
+      <label for="payee">Payee:</label>
+      <input type="text" id="payee" name="payee" required>
 
-        <label for="amount">Amount:</label>
-        <input type="number" id="amount" name="amount" required>
+      <label for="amount">Amount:</label>
+      <input type="number" id="amount" name="amount" required>
 
-        <label for="date">Date:</label>
-        <input type="date" id="date" name="date" required>
+      <label for="date">Date:</label>
+      <input type="date" id="date" name="date" required>
 
-        <button type="submit">Send E-Cheque</button>
+      <button type="submit">Send E-Cheque</button>
     </form>
 
     {% if initial_hash %}
-        <div class="hash-display">
-            <h2>Initial Hash:</h2>
-            <p>{{ initial_hash }}</p>
-        </div>
+      <div class="hash-display">
+        <strong>Initial Hash:</strong>
+        <p>{{ initial_hash }}</p>
+      </div>
     {% endif %}
 
     {% if status_message %}
-        <div class="status-message">
-            <p>{{ status_message }}</p>
-        </div>
+      <div class="status-message">
+        <p>{{ status_message }}</p>
+      </div>
     {% endif %}
+  </div>
+
 </body>
 </html>

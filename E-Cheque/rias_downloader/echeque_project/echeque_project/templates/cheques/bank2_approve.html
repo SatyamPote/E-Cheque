@@ -1,114 +1,164 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Bank 2 - Approve E-Cheque</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f0f4f8;
-            padding: 2rem;
-        }
+  <meta charset="UTF-8" />
+  <title>Bank 2 - Approve E-Cheque</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      margin: 0;
+      padding: 2rem;
+      background: #f2f2f2;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
 
-        h1 {
-            text-align: center;
-            color: #334e68;
-        }
+    .cheque-container {
+      width: 728px;
+      border: 2px solid black;
+      background: #fff;
+      padding: 20px;
+      position: relative;
+      box-sizing: border-box;
+      margin-bottom: 20px;
+    }
 
-        .card {
-            background-color: #fff;
-            margin: 2rem auto;
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            max-width: 800px;
-        }
+    .bank-title {
+      text-align: center;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
 
-        .section {
-            margin-bottom: 2rem;
-            border-bottom: 1px solid #ccc;
-            padding-bottom: 1rem;
-        }
+    .cheque-line {
+      margin-bottom: 20px;
+    }
 
-        .section h2 {
-            color: #334e68;
-        }
+    .label {
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
 
-        .key-display {
-            margin-top: 1rem;
-            padding: 1rem;
-            background-color: #e9ecef;
-            border-radius: 5px;
-            color: #495057;
-            white-space: pre-wrap; /* Preserve formatting of keys */
-        }
+    .value-line {
+      border-bottom: 1px dashed #555;
+      height: 20px;
+    }
 
-        .hash-display {
-            margin-top: 1rem;
-            padding: 1rem;
-            background-color: #d1ecf1;
-            border-radius: 5px;
-            color: #263238;
-        }
+    .status-box {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      border: 2px solid black;
+      padding: 6px 12px;
+      font-size: 14px;
+    }
 
-        button {
-            background-color: #334e68;
-            color: #fff;
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1rem;
-        }
+    .section {
+      width: 728px;
+      background-color: #fff;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      border-radius: 5px;
+    }
 
-        button:hover {
-            background-color: #486581;
-        }
-    </style>
+    .section h2 {
+      margin-top: 0;
+      color: #334e68;
+    }
+
+    .key-display, .hash-display {
+      margin-top: 1rem;
+      padding: 1rem;
+      background-color: #e9ecef;
+      border-radius: 5px;
+      color: #495057;
+      white-space: pre-wrap;
+    }
+
+    .hash-display {
+      background-color: #d1ecf1;
+    }
+
+    button {
+      background-color: #334e68;
+      color: #fff;
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+      margin-top: 1rem;
+    }
+
+    button:hover {
+      background-color: #486581;
+    }
+  </style>
 </head>
 <body>
-    <h1>Bank 2 - Approve E-Cheque</h1>
 
-    <div class="card">
-        <section class="section">
-            <h2>Cheque Details</h2>
-            <p><strong>Payee:</strong> {{ cheque.payee }}</p>
-            <p><strong>Amount:</strong> {{ cheque.amount }}</p>
-            <p><strong>Date:</strong> {{ cheque.date }}</p>
-        </section>
+  <div class="cheque-container">
+    <div class="bank-title">Bank 2 - Cheque Approval</div>
 
-        <section class="section">
-            <h2>Initial Hash Verification</h2>
-            <p><strong>Initial Hash:</strong> {{ initial_hash }}</p>
-            <p><em>Please verify this hash matches the information received from Bank 1.</em></p>
-        </section>
-
-        <section class="section">
-            <h2>Key Generation & Sharing</h2>
-            <div class="key-display">
-                <h3>Private Key:</h3>
-                <p>{{ private_key }}</p>
-            </div>
-            <div class="key-display">
-                <h3>Public Key:</h3>
-                <p>{{ public_key }}</p>
-            </div>
-            <p><em>Keys have been generated and are available for secure communication.</em></p>
-        </section>
-
-        <section class="section">
-            <h2>Final Hash (Post-Approval)</h2>
-            <div class="hash-display">
-                <h3>Final Hash:</h3>
-                <p>{{ final_hash }}</p>
-            </div>
-        </section>
-
-        <form method="post">
-            {% csrf_token %}
-            <button type="submit">Approve E-Cheque</button>
-        </form>
+    <div class="cheque-line">
+      <div class="label">Payee</div>
+      <div class="value-line">{{ cheque.payee }}</div>
     </div>
+
+    <div class="cheque-line">
+      <div class="label">Amount</div>
+      <div class="value-line">${{ cheque.amount }}</div>
+    </div>
+
+    <div class="cheque-line">
+      <div class="label">Date</div>
+      <div class="value-line">{{ cheque.date }}</div>
+    </div>
+
+    <div class="status-box">
+      {% if cheque.status == 'pending' %}
+        Under Processing
+      {% elif cheque.status == 'approved' %}
+        Approved
+      {% elif cheque.status == 'rejected' %}
+        Rejected
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Initial Hash Verification</h2>
+    <p><strong>Initial Hash:</strong> {{ initial_hash }}</p>
+    <p><em>Please verify this hash matches the information from Bank 1.</em></p>
+  </div>
+
+  <div class="section">
+    <h2>Key Generation & Sharing</h2>
+    <div class="key-display">
+      <h3>Private Key:</h3>
+      <p>{{ private_key }}</p>
+    </div>
+    <div class="key-display">
+      <h3>Public Key:</h3>
+      <p>{{ public_key }}</p>
+    </div>
+    <p><em>Keys have been generated and are available for secure communication.</em></p>
+  </div>
+
+  <div class="section">
+    <h2>Final Hash (Post-Approval)</h2>
+    <div class="hash-display">
+      <h3>Final Hash:</h3>
+      <p>{{ final_hash }}</p>
+    </div>
+  </div>
+
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit">Approve E-Cheque</button>
+  </form>
+
 </body>
 </html>

@@ -1,141 +1,129 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Verify Cheque</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body {
-            margin: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(to right, #f0f4f8, #d9e2ec);
-            color: #102a43;
-        }
+  <meta charset="UTF-8">
+  <title>Cheque Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      padding: 2rem;
+      background-color: #f2f2f2;
+      font-family: 'Segoe UI', sans-serif;
+      color: #102a43;
+    }
 
-        header, footer {
-            background-color: #334e68;
-            color: white;
-            text-align: center;
-            padding: 1rem;
-        }
+    header {
+      text-align: center;
+      background-color: #000;
+      color: white;
+      padding: 1rem;
+      border-radius: 10px;
+      margin-bottom: 2rem;
+    }
 
-        nav {
-            background-color: #486581;
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            padding: 1rem;
-        }
+    .cheques-wrapper {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      justify-content: center;
+    }
 
-        nav a {
-            color: white;
-            margin: 0 1rem;
-            text-decoration: none;
-            font-weight: bold;
-        }
+    .cheque-container {
+      width: 728px;
+      height: 300px;
+      background-color: #fff;
+      border: 2px solid #000;
+      border-radius: 10px;
+      padding: 20px;
+      position: relative;
+      box-sizing: border-box;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s ease;
+    }
 
-        nav a:hover {
-            color: #ffb703;
-        }
+    .cheque-container:hover {
+      transform: scale(1.01);
+    }
 
-        main {
-            max-width: 600px;
-            margin: 2rem auto;
-            background: #ffffff;
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
+    .bank-title {
+      text-align: center;
+      font-weight: bold;
+      font-size: 1.2rem;
+      margin-bottom: 1.5rem;
+    }
 
-        h2 {
-            text-align: center;
-            margin-bottom: 1.5rem;
-        }
+    .cheque-line {
+      margin-bottom: 1.2rem;
+    }
 
-        label {
-            display: block;
-            margin-top: 1rem;
-            margin-bottom: 0.25rem;
-            font-weight: bold;
-        }
+    .label {
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 4px;
+    }
 
-        input, textarea {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-size: 1rem;
-        }
+    .value-line {
+      font-size: 16px;
+      font-weight: 500;
+      border-bottom: 1px dashed #888;
+      padding-bottom: 4px;
+      color: #000;
+    }
 
-        textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
+    .status-box {
+      position: absolute;
+      bottom: 15px;
+      right: 15px;
+      border: 2px solid #000;
+      padding: 6px 14px;
+      font-size: 14px;
+      background-color: #eaeaea;
+      font-weight: bold;
+      border-radius: 6px;
+    }
 
-        .btn {
-            margin-top: 1.5rem;
-            display: block;
-            width: 100%;
-            background-color: #2e7d32;
-            color: white;
-            font-size: 1.1rem;
-            padding: 0.75rem;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
+    @media (max-width: 768px) {
+      .cheque-container {
+        width: 95%;
+      }
 
-        .btn:hover {
-            background-color: #1b5e20;
-        }
-
-        @media (max-width: 600px) {
-            main {
-                margin: 1rem;
-                padding: 1.5rem;
-            }
-
-            nav {
-                flex-direction: column;
-                gap: 0.5rem;
-            }
-        }
-    </style>
+      body {
+        padding: 1rem;
+      }
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <h1>Verify Cheque</h1>
-    </header>
 
-    <nav>
-        <a href="{% url 'home' %}">Home</a>
-        <a href="{% url 'create_cheque' %}">Create</a>
-        <a href="{% url 'blockchain' %}">Blockchain</a>
-    </nav>
+  <header>
+    <h1>Cheque Dashboard</h1>
+  </header>
 
-    <main>
-        <h2>Cheque Verification Form</h2>
-        <form method="post" action="{% url 'verify_cheque_result' %}">
-            {% csrf_token %}
-            <label for="payee">Payee:</label>
-            <input type="text" id="payee" name="payee" required>
+  <div class="cheques-wrapper">
+    {% for cheque in cheques %}
+      <div class="cheque-container">
+        <div class="bank-title">{{ cheque.bank_name|default:"Bank Name" }}</div>
 
-            <label for="amount">Amount:</label>
-            <input type="number" step="0.01" id="amount" name="amount" required>
+        <div class="cheque-line">
+          <div class="label">Name</div>
+          <div class="value-line">{{ cheque.payee }}</div>
+        </div>
 
-            <label for="date">Date:</label>
-            <input type="date" id="date" name="date" required>
+        <div class="cheque-line">
+          <div class="label">Amount</div>
+          <div class="value-line">{{ cheque.amount }}</div>
+        </div>
 
-            <label for="signature">Signature:</label>
-            <textarea id="signature" name="signature" required></textarea>
+        <div class="cheque-line">
+          <div class="label">Date</div>
+          <div class="value-line">{{ cheque.date }}</div>
+        </div>
 
-            <button type="submit" class="btn">Verify</button>
-        </form>
-    </main>
+        <div class="status-box">{{ cheque.status }}</div>
+      </div>
+    {% endfor %}
+  </div>
 
-    <footer>
-        &copy; {{ current_year|default:"2025" }} E-Cheque System
-    </footer>
 </body>
 </html>

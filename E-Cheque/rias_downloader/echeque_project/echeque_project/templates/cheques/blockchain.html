@@ -1,47 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Blockchain Ledger</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f0f4f8;
-            padding: 2rem;
-        }
+  <meta charset="UTF-8" />
+  <title>Blockchain Ledger</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f0f4f8;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
 
-        h1 {
-            text-align: center;
-            color: #334e68;
-        }
+    h1 {
+      text-align: center;
+      color:rgb(0, 0, 0);
+      margin-bottom: 2rem;
+    }
 
-        .block {
-            background-color: #fff;
-            margin: 1rem auto;
-            padding: 1.5rem;
-            border-left: 5px solid #334e68;
-            border-radius: 5px;
-            max-width: 800px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
+    .block {
+      background-color: #fff;
+      width: 728px;
+      border: 2px solidrgb(0, 0, 0);
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      position: relative;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
 
-        .block p {
-            margin: 0.5rem 0;
-            color: #627d98;
-        }
-    </style>
+    .block-header {
+      font-weight: bold;
+      font-size: 16px;
+      margin-bottom: 10px;
+      text-align: center;
+      color:rgb(0, 0, 0);
+    }
+
+    .cheque-line {
+      margin-bottom: 15px;
+    }
+
+    .label {
+      font-size: 14px;
+      margin-bottom: 4px;
+      color: #555;
+    }
+
+    .value-line {
+      border-bottom: 1px dashed #555;
+      height: 20px;
+    }
+
+    .hash-info {
+      background-color: #e9ecef;
+      padding: 10px;
+      border-radius: 5px;
+      margin-top: 10px;
+      font-size: 14px;
+      word-wrap: break-word;
+    }
+
+    .block-id {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background:rgb(0, 0, 0);
+      color: white;
+      padding: 5px 10px;
+      border-radius: 4px;
+      font-size: 12px;
+    }
+  </style>
 </head>
 <body>
-    <h1>Blockchain Ledger</h1>
-    {% for block in blocks %}
-    <div class="block">
-        <p><strong>Block ID:</strong> {{ block.id }}</p>
-        <p><strong>Timestamp:</strong> {{ block.timestamp }}</p>
-        <p><strong>Cheque ID:</strong> {{ block.cheque.id }}</p>
-        <p><strong>Previous Hash:</strong> {{ block.previous_hash }}</p>
-        <p><strong>Hash:</strong> {{ block.hash }}</p>
+
+  <h1>Blockchain Ledger</h1>
+
+  {% for block in blocks %}
+  <div class="block">
+    <div class="block-id">Block ID: {{ block.id }}</div>
+    <div class="block-header">Cheque Info</div>
+
+    <div class="cheque-line">
+      <div class="label">Timestamp</div>
+      <div class="value-line">{{ block.timestamp }}</div>
     </div>
-    {% endfor %}
+
+    <div class="cheque-line">
+      <div class="label">Cheque ID</div>
+      <div class="value-line">{{ block.cheque.id }}</div>
+    </div>
+
+    <div class="hash-info">
+      <strong>Previous Hash:</strong><br>{{ block.previous_hash }}
+    </div>
+
+    <div class="hash-info">
+      <strong>Current Hash:</strong><br>{{ block.hash }}
+    </div>
+  </div>
+  {% endfor %}
+
 </body>
 </html>

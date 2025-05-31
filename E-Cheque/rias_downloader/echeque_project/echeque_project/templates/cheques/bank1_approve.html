@@ -1,79 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Bank 1 - Waiting for Approval</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f0f4f8;
-            padding: 2rem;
-        }
+  <meta charset="UTF-8" />
+  <title>Bank 1 - Cheque Status</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #f2f2f2;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
 
-        h1 {
-            text-align: center;
-            color: #334e68;
-        }
+    .cheque-container {
+      width: 728px;
+      height: auto;
+      border: 2px solid black;
+      background: #fff;
+      padding: 20px;
+      position: relative;
+      box-sizing: border-box;
+      margin-bottom: 20px;
+    }
 
-        .card {
-            background-color: #fff;
-            margin: 2rem auto;
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            max-width: 800px;
-        }
+    .bank-title {
+      text-align: center;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
 
-        .details {
-            margin-bottom: 2rem;
-        }
+    .cheque-line {
+      margin-bottom: 20px;
+    }
 
-        .details p {
-            margin: 0.5rem 0;
-            color: #627d98;
-        }
+    .label {
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
 
-        .status {
-            text-align: center;
-            font-size: 1.2rem;
-            color: #334e68;
-        }
+    .value-line {
+      border-bottom: 1px dashed #555;
+      height: 20px;
+    }
 
-        .approve-link {
-            display: block;
-            text-align: center;
-            margin-top: 2rem;
-            padding: 0.75rem 1.5rem;
-            background-color: #334e68;
-            color: #fff;
-            border-radius: 5px;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .approve-link:hover {
-            background-color: #486581;
-        }
-    </style>
+    .status-box {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      border: 2px solid black;
+      padding: 6px 12px;
+      font-size: 14px;
+    }
+  </style>
 </head>
 <body>
-    <h1>Bank 1 - Waiting for Approval</h1>
+  <div class="cheque-container">
+    <div class="bank-title">Bank 1 - Cheque</div>
 
-    <div class="card">
-        <section class="details">
-            <h2>Cheque Details</h2>
-            <p><strong>Payee:</strong> {{ cheque.payee }}</p>
-            <p><strong>Amount:</strong> {{ cheque.amount }}</p>
-            <p><strong>Date:</strong> {{ cheque.date }}</p>
-            <p><strong>Initial Hash:</strong> {{ initial_hash }}</p>
-        </section>
-
-        <div class="status">
-            <p>Waiting for approval from Bank 2...</p>
-        </div>
-
-        <a href="{% url 'bank2_approve' cheque_id=cheque.id %}" class="approve-link">Send to Bank 2 for Approval</a>
+    <div class="cheque-line">
+      <div class="label">Payee</div>
+      <div class="value-line">{{ cheque.payee }}</div>
     </div>
+
+    <div class="cheque-line">
+      <div class="label">Amount</div>
+      <div class="value-line">${{ cheque.amount }}</div>
+    </div>
+
+    <div class="cheque-line">
+      <div class="label">Date</div>
+      <div class="value-line">{{ cheque.date }}</div>
+    </div>
+
+    <div class="status-box">
+      {% if cheque.status == 'pending' %}
+        Under Processing
+      {% elif cheque.status == 'approved' %}
+        Approved
+      {% elif cheque.status == 'rejected' %}
+        Rejected
+      {% endif %}
+    </div>
+  </div>
 </body>
 </html>
