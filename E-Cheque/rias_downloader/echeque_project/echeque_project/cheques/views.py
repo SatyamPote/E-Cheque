@@ -8,6 +8,9 @@ import hashlib
 from Crypto.PublicKey import RSA
 from Crypto.Hash import SHA256
 from Crypto.Signature import pkcs1_15
+import qrcode
+from io import BytesIO
+import base64
 
 def home(request):
     return render(request, 'cheques/home.html')
@@ -48,7 +51,30 @@ def create_cheque(request):
 
 def blockchain(request):
     blocks = Block.objects.all().order_by('-timestamp')
-    print(f"Number of blocks retrieved: {len(blocks)}")  # Add this line
+    for block in blocks:
+        cheque = block.cheque
+        # Create QR code data
+        data = f"Payee: {cheque.payee}\nAmount: {cheque.amount}\nDate: {cheque.date}\nStatus: {cheque.status}\nHash: {block.hash}"
+
+        # Generate QR code
+        qr = qrcode.QRCode(
+            version=1,
+            error_correction=qrcode.constants.ERROR_CORRECT_L,
+            box_size=10,
+            border=4,
+        )
+        qr.add_data(data)
+        qr.make(fit=True)
+
+        # Convert QR code to base64 for embedding in HTML
+        img = qr.make_image(fill_color="black", back_color="white")
+        buffered = BytesIO()
+        img.save(buffered, format="PNG")
+        qr_code_base64 = base64.b64encode(buffered.getvalue()).decode()
+
+        # Attach QR code to the block object for rendering in the template
+        block.qr_code = qr_code_base64
+
     return render(request, 'cheques/blockchain.html', {'blocks': blocks})
 
 def verify_cheque(request):

@@ -1,98 +1,223 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Create E-Cheque</title>
   <style>
+    :root {
+      --primary:rgb(11, 79, 148);
+      --accent:rgb(28, 71, 190);
+      --light:rgb(115, 94, 195);
+      --dark: #1a252f;
+      --gray: #7f8c8d;
+    }
+
     body {
-      font-family: Arial, sans-serif;
-      background: #f2f2f2;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--light-bg);
+      color: var(--text);
       margin: 0;
-      padding: 2rem;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      flex-direction: column;
+      padding: 0;
     }
 
-    h1 {
+    header {
+      background-color: var(--primary);
+      color: var(--white);
       text-align: center;
-      margin-bottom: 2rem;
-    }
-
-    .form-card {
-      background-color: #fff;
-      padding: 2rem;
-      border: 2px solid black;
-      border-radius: 10px;
-      width: 728px;
-      box-sizing: border-box;
-      position: relative;
-    }
-
-    form label {
-      display: block;
-      margin-bottom: 0.5rem;
+      padding: 1rem 0;
+      font-size: 1.5rem;
       font-weight: bold;
     }
 
-    form input {
-      width: 100%;
-      padding: 0.75rem;
-      margin-bottom: 1.5rem;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      font-size: 1rem;
+    nav {
+      background-color: var(--accent);
+      padding: 0.75rem 1rem;
     }
 
-    form button {
-      background-color: black;
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .logo a {
+      color: white;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 1.2rem;
+    }
+
+    .menu {
+      list-style: none;
+      display: flex;
+      gap: 1.2rem;
+      margin: 0;
+      padding: 0;
+    }
+
+    .menu li a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      transition: opacity 0.2s;
+    }
+
+    .menu li a:hover {
+      opacity: 0.8;
+    }
+
+    .hamburger {
+      display: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: white;
+    }
+
+    #menu-toggle {
+      display: none;
+    }
+
+    @media (max-width: 768px) {
+      .hamburger {
+        display: block;
+      }
+
+      .menu {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        background-color: var(--accent);
+        margin-top: 0.5rem;
+        padding: 0.5rem;
+      }
+
+      #menu-toggle:checked + .hamburger + .menu {
+        display: flex;
+      }
+
+      .nav-container {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .logo {
+        margin-bottom: 0.5rem;
+      }
+    }
+
+    main {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 1.5rem;
+      background-color: var(--white);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+      border-radius: 10px;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      font-size: 1.6rem;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    label {
+      font-weight: 600;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="date"] {
+      padding: 0.75rem;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    button {
+      background-color: var(--primary);
       color: white;
       padding: 0.75rem 1.5rem;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
       font-size: 1rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      align-self: flex-start;
     }
 
-    form button:hover {
-      background-color: #333;
+    button:hover {
+      background-color: #003f4d;
     }
 
-    .hash-display, .status-message {
+    .hash-display,
+    .status-message {
       margin-top: 1.5rem;
       padding: 1rem;
-      border-radius: 5px;
-      font-size: 14px;
+      border-radius: 6px;
+      font-size: 0.9rem;
     }
 
     .hash-display {
-      background-color: #e9ecef;
-      color: #495057;
+      background-color: #e0f7fa;
+      color: #004d4d;
     }
 
     .status-message {
-      background-color: #f8d7da;
-      color: #721c24;
+      background-color: #fdecea;
+      color: #b00020;
+    }
+
+    @media (max-width: 768px) {
+      main {
+        margin: 1rem;
+        padding: 1rem;
+      }
     }
   </style>
 </head>
 <body>
+  <header>
+    E-Cheque Banking Portal
+  </header>
 
-  <h1>Issue E-Cheque</h1>
+  <nav>
+    <div class="nav-container">
+      <div class="logo">
+        <a href="{% url 'home' %}">E-Cheque</a>
+      </div>
+      <input type="checkbox" id="menu-toggle" />
+      <label for="menu-toggle" class="hamburger">☰</label>
+      <ul class="menu">
+        <li><a href="{% url 'home' %}">Home</a></li>
+        <li><a href="{% url 'create_cheque' %}">Create Cheque</a></li>
+        <li><a href="{% url 'blockchain' %}">Blockchain</a></li>
+        <li><a href="{% url 'verify_cheque' %}">Check Status</a></li>
+      </ul>
+    </div>
+  </nav>
 
-  <div class="form-card">
+  <main>
+    <h2>Issue New E-Cheque</h2>
     <form method="post">
       {% csrf_token %}
-      <label for="payee">Payee:</label>
+      <label for="payee">Payee</label>
       <input type="text" id="payee" name="payee" required>
 
-      <label for="amount">Amount:</label>
+      <label for="amount">Amount</label>
       <input type="number" id="amount" name="amount" required>
 
-      <label for="date">Date:</label>
+      <label for="date">Date</label>
       <input type="date" id="date" name="date" required>
 
       <button type="submit">Send E-Cheque</button>
@@ -100,17 +225,16 @@
 
     {% if initial_hash %}
       <div class="hash-display">
-        <strong>Initial Hash:</strong>
-        <p>{{ initial_hash }}</p>
+        <strong>Initial Hash:</strong><br>
+        {{ initial_hash }}
       </div>
     {% endif %}
 
     {% if status_message %}
       <div class="status-message">
-        <p>{{ status_message }}</p>
+        {{ status_message }}
       </div>
     {% endif %}
-  </div>
-
+  </main>
 </body>
 </html>

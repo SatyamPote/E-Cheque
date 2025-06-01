@@ -5,6 +5,108 @@
   <title>Cheque Dashboard</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
+    /* General Styles */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f2f2f2;
+      color: #102a43;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Header Styles */
+    header {
+      background-color: #000;
+      color: white;
+      text-align: center;
+      padding: 1rem 0;
+    }
+
+    /* Navigation Styles */
+    nav {
+      background-color: #334e68;
+      color: #fff;
+      padding: 1rem;
+    }
+
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .logo a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1.4rem;
+    }
+
+    .menu {
+      list-style: none;
+      display: flex;
+      gap: 1.5rem;
+      margin: 0;
+      padding: 0;
+    }
+
+    .menu li a {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s;
+    }
+
+    .menu li a:hover {
+      color: #ffd166;
+    }
+
+    /* Hamburger Menu Styles */
+    .hamburger {
+      display: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    #menu-toggle {
+      display: none;
+    }
+
+    /* Media Query for Responsiveness */
+    @media (max-width: 768px) {
+      .hamburger {
+        display: block;
+      }
+
+      .menu {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        background-color: #334e68;
+        padding: 1rem;
+        z-index: 1;
+        box-shadow: 0px 4px 6px rgba(0,0,0,0.1); /* Added a shadow for better visibility */
+      }
+
+      #menu-toggle:checked + .hamburger + .menu {
+        display: flex;
+      }
+
+      .nav-container {
+        flex-direction: column; /* Stack logo and hamburger on smaller screens */
+        align-items: flex-start;
+      }
+
+      .logo {
+        margin-bottom: 1rem;
+      }
+    }
+
     body {
       margin: 0;
       padding: 2rem;
@@ -99,6 +201,21 @@
   <header>
     <h1>Cheque Dashboard</h1>
   </header>
+  <nav>
+    <div class="nav-container">
+      <div class="logo">
+        <a href="{% url 'home' %}">E-Cheque</a>
+      </div>
+      <input type="checkbox" id="menu-toggle" />
+      <label for="menu-toggle" class="hamburger">☰</label>
+      <ul class="menu">
+        <li><a href="{% url 'home' %}">Home</a></li>
+        <li><a href="{% url 'create_cheque' %}">Create Cheque</a></li>
+        <li><a href="{% url 'blockchain' %}">Blockchain</a></li>
+        <li><a href="{% url 'verify_cheque' %}">Check Status</a></li>
+      </ul>
+    </div>
+  </nav>
 
   <div class="cheques-wrapper">
     {% for cheque in cheques %}

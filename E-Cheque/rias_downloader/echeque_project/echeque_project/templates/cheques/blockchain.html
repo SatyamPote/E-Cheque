@@ -5,83 +5,219 @@
   <title>Blockchain Ledger</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f0f4f8;
-      padding: 2rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+    :root {
+      --primary: #005f73;
+      --accent: #0a9396;
+      --light-bg: #f5f9fa;
+      --white: #ffffff;
+      --text: #1e293b;
+      --muted: #64748b;
+      --shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 
-    h1 {
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--light-bg);
+      color: var(--text);
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: var(--primary);
+      color: var(--white);
       text-align: center;
-      color:rgb(0, 0, 0);
-      margin-bottom: 2rem;
+      padding: 1rem 0;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    nav {
+      background-color: var(--accent);
+      padding: 0.75rem 1rem;
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .logo a {
+      color: white;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 1.2rem;
+    }
+
+    .menu {
+      list-style: none;
+      display: flex;
+      gap: 1.2rem;
+      margin: 0;
+      padding: 0;
+    }
+
+    .menu li a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      transition: opacity 0.2s;
+    }
+
+    .menu li a:hover {
+      opacity: 0.8;
+    }
+
+    .hamburger {
+      display: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: white;
+    }
+
+    #menu-toggle {
+      display: none;
+    }
+
+    @media (max-width: 768px) {
+      .hamburger {
+        display: block;
+      }
+
+      .menu {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        background-color: var(--accent);
+        margin-top: 0.5rem;
+        padding: 0.5rem;
+      }
+
+      #menu-toggle:checked + .hamburger + .menu {
+        display: flex;
+      }
+
+      .nav-container {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .logo {
+        margin-bottom: 0.5rem;
+      }
+    }
+
+    .main-title {
+      text-align: center;
+      font-size: 1.8rem;
+      margin: 2rem 0 1rem;
+      color: var(--text);
     }
 
     .block {
-      background-color: #fff;
-      width: 728px;
-      border: 2px solidrgb(0, 0, 0);
+      background-color: var(--white);
+      border: 1px solid #ccc;
+      border-left: 6px solid var(--primary);
       border-radius: 8px;
-      padding: 20px;
-      margin-bottom: 20px;
+      padding: 1.5rem;
+      margin: 1rem auto;
+      width: 90%;
+      max-width: 800px;
+      box-shadow: var(--shadow);
       position: relative;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    .block-header {
-      font-weight: bold;
-      font-size: 16px;
-      margin-bottom: 10px;
-      text-align: center;
-      color:rgb(0, 0, 0);
-    }
-
-    .cheque-line {
-      margin-bottom: 15px;
-    }
-
-    .label {
-      font-size: 14px;
-      margin-bottom: 4px;
-      color: #555;
-    }
-
-    .value-line {
-      border-bottom: 1px dashed #555;
-      height: 20px;
-    }
-
-    .hash-info {
-      background-color: #e9ecef;
-      padding: 10px;
-      border-radius: 5px;
-      margin-top: 10px;
-      font-size: 14px;
-      word-wrap: break-word;
     }
 
     .block-id {
       position: absolute;
-      top: 10px;
-      right: 10px;
-      background:rgb(0, 0, 0);
+      top: 12px;
+      right: 12px;
+      background-color: var(--primary);
       color: white;
-      padding: 5px 10px;
-      border-radius: 4px;
+      padding: 4px 10px;
+      border-radius: 3px;
       font-size: 12px;
+    }
+
+    .block-header {
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
+
+    .cheque-line {
+      margin-bottom: 0.75rem;
+    }
+
+    .label {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--muted);
+    }
+
+    .value-line {
+      font-size: 1rem;
+      border-bottom: 1px dashed #ccc;
+      padding-bottom: 0.2rem;
+    }
+
+    .hash-info {
+      margin-top: 0.8rem;
+      font-size: 0.85rem;
+      background-color: #f1f5f9;
+      padding: 0.75rem;
+      border-radius: 5px;
+      word-break: break-word;
+    }
+
+    footer {
+      text-align: center;
+      color: #888;
+      font-size: 0.9rem;
+      margin: 3rem 0 1rem;
+    }
+
+    .qr-code-container {
+      text-align: center;
+      margin-top: 1rem;
+    }
+
+    .qr-code-instruction {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-top: 0.5rem;
     }
   </style>
 </head>
 <body>
+  <header>
+    E-Cheque Banking Portal
+  </header>
 
-  <h1>Blockchain Ledger</h1>
+  <nav>
+    <div class="nav-container">
+      <div class="logo">
+        <a href="{% url 'home' %}">E-Cheque</a>
+      </div>
+      <input type="checkbox" id="menu-toggle" />
+      <label for="menu-toggle" class="hamburger">☰</label>
+      <ul class="menu">
+        <li><a href="{% url 'home' %}">Home</a></li>
+        <li><a href="{% url 'create_cheque' %}">Create Cheque</a></li>
+        <li><a href="{% url 'blockchain' %}">Blockchain</a></li>
+        <li><a href="{% url 'verify_cheque' %}">Check Status</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <h2 class="main-title">Blockchain Ledger</h2>
 
   {% for block in blocks %}
   <div class="block">
-    <div class="block-id">Block ID: {{ block.id }}</div>
+    <div class="block-id">ID: {{ block.id }}</div>
     <div class="block-header">Cheque Info</div>
 
     <div class="cheque-line">
@@ -101,8 +237,16 @@
     <div class="hash-info">
       <strong>Current Hash:</strong><br>{{ block.hash }}
     </div>
+
+    <div class="qr-code-container">
+      <img src="data:image/png;base64,{{ block.qr_code }}" alt="QR Code" width="64" height="64" />
+      <p class="qr-code-instruction">Use your camera or Google Lens to check your status</p>
+    </div>
   </div>
   {% endfor %}
 
+  <footer>
+    © 2025 E-Cheque Platform. All rights reserved.
+  </footer>
 </body>
 </html>
