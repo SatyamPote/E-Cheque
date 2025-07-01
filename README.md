@@ -1,120 +1,194 @@
-# E-Cheque System
+# 💳 E-Cheque System
 
-## Overview
+## 🧾 Overview
 
-This project implements a basic e-cheque system using Django, Python, and cryptographic signatures. It allows users to issue e-cheques, view a blockchain of issued cheques, and verify the validity of cheques.  The system utilizes RSA encryption for signing and verification.
+This project implements a basic **E-Cheque System** using Django, Python, and cryptographic signatures.  
+It allows users to:
 
-## Features
+- 📝 Issue e-cheques  
+- 🔗 View a blockchain of issued cheques  
+- ✅ Verify the validity of cheques  
 
-*   **Issue E-Cheques:** Create new cheques with payee name, amount, and date.
-*   **Blockchain:** View a simple blockchain containing all issued cheques.
-*   **Verification:** Verify the authenticity of a cheque using its signature.
-*   **Admin Interface:** Manage cheques and blocks through the Django admin panel.
+The system utilizes **RSA encryption** for signing and verification.
 
-## Technologies Used
+---
 
-*   **Python:** The primary programming language.
-*   **Django:** A high-level Python web framework.
-*   **pycryptodome:** A cryptographic library for RSA encryption and signing.
-*   **SQLite:** A lightweight database for storing cheque and blockchain data (default).
+## 🚀 Features
 
-## Getting Started
+- ✍️ **Issue E-Cheques**  
+- 🧱 **Blockchain of Cheques**  
+- 🕵️ **Verification System**  
+- ⚙️ **Django Admin Interface**
 
-### Prerequisites
+---
 
-*   **Python 3.12 or higher:**  Ensure you have Python installed on your system.
-*   **pip:** Python package installer.
+## 🛠️ Technologies Used
 
-### Installation
+- Python  
+- Django  
+- PyCryptodome  
+- SQLite  
 
-1.  **Clone the repository:**
+---
 
-    ```bash
-    git clone [repository URL]
-    cd echeque_project
-    ```
+## 📥 Installation
 
-2.  **Create and activate a virtual environment:**
+```bash
+# Create and activate a virtual environment
+python -m venv venv
 
-    ```bash
-    python -m venv venv
-    source venv/bin/activate  # Linux/macOS
-    venv\Scripts\activate  # Windows
-    ```
+# On Linux/macOS:
+source venv/bin/activate
 
-3.  **Install dependencies:**
+# On Windows:
+venv\Scripts\activate
 
-    ```bash
-    pip install -r requirements.txt
-    ```
+# Install required packages
+pip install -r requirements.txt
+```
 
-    (Create a `requirements.txt` file with the following content):
+```txt
+# requirements.txt
+Django
+pycryptodome
+```
 
-    ```
-    Django
-    pycryptodome
-    ```
+---
 
-### Key Generation
+## 🔑 Key Generation
 
-Before running the application, you need to generate RSA key pairs for signing and verification.
+```bash
+# Navigate to the keys directory
+cd keys
 
-1.  **Navigate to the `keys` directory:**
+# Run key generation script
+python generate_keys.py
+```
 
-    ```bash
-    cd keys
-    ```
+```txt
+# This creates:
+# - private.pem (keep this secure)
+# - public.pem (used for verifying signatures)
+```
 
-2.  **Run the key generation script:**
+---
 
-    ```bash
-    python generate_keys.py
-    ```
+## 🗃️ Database Setup
 
-    This will create `private.pem` and `public.pem` files in the `keys` directory. **Keep the `private.pem` file secure!**
+```bash
+# Run migrations
+python manage.py makemigrations cheques
+python manage.py migrate
+```
 
-### Database Setup
+---
 
-1.  **Make migrations:**
+## 🚦 Running the Application
 
-    ```bash
-    python manage.py makemigrations cheques
-    ```
+```bash
+# Start development server
+python manage.py runserver
+```
 
-2.  **Apply migrations:**
+```txt
+# Access URLs:
+# Admin Panel: http://127.0.0.1:8000/admin/
+# Home Page:   http://127.0.0.1:8000/cheques/
+```
 
-    ```bash
-    python manage.py migrate
-    ```
+```bash
+# Create a Django superuser
+python manage.py createsuperuser
+```
 
-### Running the Application
+---
 
-1.  **Start the development server:**
+## 🧾 Create a Cheque
 
-    ```bash
-    python manage.py runserver
-    ```
+```txt
+1. Go to: http://127.0.0.1:8000/cheques/create_cheque/
+2. Fill in:
+   - Payee Name
+   - Amount
+   - Date
+3. Submit to generate and sign a cheque.
+```
 
-2.  **Access the application in your browser:**
+---
 
-    *   **Admin Interface:** `http://127.0.0.1:8000/admin/` (Create a superuser if prompted: `python manage.py createsuperuser`)
-    *   **Home Page:** `http://127.0.0.1:8000/cheques/`
+## 🔗 View Blockchain
 
-## Usage
+```txt
+- Go to: http://127.0.0.1:8000/cheques/blockchain/
+- View all cheques and block metadata in the chain.
+```
 
-1.  **Create a Cheque:**
-    *   Navigate to `http://127.0.0.1:8000/cheques/create_cheque/`.
-    *   Fill in the payee, amount, and date.
-    *   Submit the form.
+---
 
-2.  **View the Blockchain:**
-    *   Navigate to `http://127.0.0.1:8000/cheques/blockchain/`.
-    *   View the list of issued cheques and their corresponding block hashes.
+## 🔍 Verify a Cheque
 
-3.  **Verify a Cheque:**
-    *   Navigate to `http://127.0.0.1:8000/cheques/verify_cheque_form/`.
-    *   Enter the payee, amount, date, and **signature** of the cheque you want to verify.
-    *   **To get the signature:** Go to the admin interface, find the cheque, and copy the value of the "Signature" field.
-    *   Submit the form.  The system will indicate whether the cheque is valid or tampered with.
+```txt
+1. Go to: http://127.0.0.1:8000/cheques/verify_cheque_form/
+2. Fill in:
+   - Payee
+   - Amount
+   - Date
+   - Signature
+3. Copy the signature from the Admin Panel if needed.
+4. Submit to validate the cheque.
+```
 
-## Project Structure
+---
+
+## 🖼️ Screenshots
+
+![Homepage](https://github.com/user-attachments/assets/6b74914a-8bc1-46ca-9983-94e2b6a0af43)
+
+*Homepage of the E-Cheque System*
+
+---
+
+![Blockchain View](https://github.com/user-attachments/assets/2b1f5647-4ce2-4a7b-97d6-6108c044a921)
+
+*Blockchain listing all issued cheques*
+
+---
+
+![Verification Form](https://github.com/user-attachments/assets/cf08e205-9207-4768-ac75-dad42fb7ef3f)
+
+*Form to verify cheque authenticity*
+
+---
+
+## 📦 Deployment
+
+```bash
+# Set up virtual environment
+python -m venv venv
+
+# Activate it:
+source venv/bin/activate    # Linux/macOS
+venv\Scripts\activate       # Windows
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Run migrations
+python manage.py migrate
+
+# Collect static files (only if DEBUG=False)
+python manage.py collectstatic
+
+# Start server
+python manage.py runserver
+```
+
+---
+
+## 👨‍💼 Author & License
+
+```txt
+Created by [Satyam pote]  
+Built using Django, Python & Cryptography  
+Licensed under the MIT License  
+```
